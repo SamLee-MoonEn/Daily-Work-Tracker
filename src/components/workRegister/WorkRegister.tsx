@@ -1,19 +1,42 @@
+import { useEffect } from "react";
 import { styled } from "styled-components";
 import tw from "twin.macro";
+import { useForm, Controller, useWatch } from "react-hook-form";
 
-import OptionSelector from "../common/OptionSelector";
+import OptionSelector, {
+  CustomedOptionSelector,
+} from "../common/OptionSelector";
 import Calendar from "../common/Calendar";
 
 export default function WorkRegister() {
+  const { control } = useForm({ defaultValues: { region: "HQ" } });
+
+  const result = useWatch({ control, name: "region" });
+
+  useEffect(() => {
+    console.log(result);
+  }, [result]);
   return (
     <MainContainer>
       <div className="text-2xl ml-10 mt-10 text-black">업무 등록 페이지</div>
-      <form className="grid grid-cols-4 gap-4 mt-10 border border-solid border-gray-500 rounded-lg p-10">
+      <form className="grid grid-cols-4 grid-rows-2 gap-4 mt-10 border border-solid border-gray-500 rounded-lg p-10">
         <div className="w-full flex flex-col items-center">
           <label htmlFor="selectRegion" className="text-lg">
             요청 지역
           </label>
-          <OptionSelector labelId="selectRegion" options={regionOptions} />
+          <Controller
+            name="region"
+            control={control}
+            defaultValue="HQ"
+            render={({ field }) => (
+              <OptionSelector
+                labelId="selectRegion"
+                selectedValue={field.value}
+                handleGetRegion={(value) => field.onChange(value)}
+                options={regionOptions}
+              />
+            )}
+          />
         </div>
         <div className="w-full flex flex-col items-center">
           <label htmlFor="inputCustomer" className="text-lg">
@@ -53,7 +76,22 @@ export default function WorkRegister() {
             disabled
           />
         </div>
-        <Calendar />
+        <div className="w-full flex flex-col items-center">
+          <label className="text-lg">요청 날짜</label>
+          <Calendar />
+        </div>
+        <div className="w-full flex flex-col items-center col-span-2">
+          <label htmlFor="inputOwner" className="text-lg">
+            요청 내용
+          </label>
+          <input
+            type="text"
+            id="inputOwner"
+            className="h-12 rounded-lg border-2 border-black w-full pl-3"
+            placeholder="요청 내용을 입력해 주세요."
+          />
+        </div>
+        {/* <CustomedOptionSelector options={regionOptions} /> */}
       </form>
     </MainContainer>
   );
