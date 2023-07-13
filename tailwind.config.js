@@ -2,7 +2,7 @@
 export default {
   content: ["/index.html", "./**/*.{ts,tsx}"],
   theme: {
-    extend: {},
+    extend: { colors: { light: "#79A9AE" } },
     fontFamily: {
       sans: ["GmarketSansMedium"],
     },
