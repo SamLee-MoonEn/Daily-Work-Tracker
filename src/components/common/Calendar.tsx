@@ -3,11 +3,10 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import styled from "styled-components";
 import tw from "twin.macro";
-
-const CalendarWrapper = styled.div``;
+import { DatePickerWrapper } from "../style/StyledCalendar";
 
 const StyledDatepicker = styled(DatePicker)`
-  ${tw`border border-neutral-400 outline-2 outline-neutral-400 rounded-lg w-full h-8 text-center`}
+  ${tw`border border-2 border-black w-full rounded-lg h-12 text-center`}
 `;
 
 export default function Calendar() {
@@ -18,13 +17,14 @@ export default function Calendar() {
   };
 
   return (
-    <CalendarWrapper>
+    <DatePickerWrapper>
       <StyledDatepicker
+        dateFormat={"yyyy년 MM월 dd일"}
         locale={ko}
         shouldCloseOnSelect
         selected={selectedDate}
         onChange={(date: Date) => handleDate(date)}
       />
-    </CalendarWrapper>
+    </DatePickerWrapper>
   );
 }
