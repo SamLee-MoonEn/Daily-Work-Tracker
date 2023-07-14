@@ -7,6 +7,11 @@ import { DatePickerWrapper } from "../style/StyledCalendar";
 
 const StyledDatepicker = styled(DatePicker)`
   ${tw`border border-2 border-black w-full rounded-lg h-12 text-center`}
+  width: 100%;
+  height: 3rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 2px solid black;
 `;
 
 export default function Calendar() {
