@@ -1,12 +1,9 @@
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import styled from "styled-components";
-import tw from "twin.macro";
 import { DatePickerWrapper } from "../style/StyledCalendar";
 
 const StyledDatepicker = styled(DatePicker)`
-  ${tw`border border-2 border-black w-full rounded-lg h-12 text-center`}
   width: 100%;
   height: 3rem;
   border-radius: 0.5rem;
@@ -14,13 +11,13 @@ const StyledDatepicker = styled(DatePicker)`
   border: 2px solid black;
 `;
 
-export default function Calendar() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const handleDate = (date: Date) => {
-    setSelectedDate(date);
-  };
-
+export default function Calendar({
+  handleDate,
+  selectedDate,
+}: {
+  handleDate: (date: Date) => void;
+  selectedDate: Date;
+}) {
   return (
     <DatePickerWrapper>
       <StyledDatepicker
