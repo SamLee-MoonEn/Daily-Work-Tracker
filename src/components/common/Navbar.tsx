@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 
+import kohyoungIcon from "../../assets/kohyoung_icon.png";
+
 export default function Navbar() {
   return (
     <nav className="relative">
       <div className="h-screen w-1/12 fixed top-0 left-0 bg-primary">
-        <div className="flex flex-col mt-20 text-sm xs:text-lg">
+        <div className="flex flex-col mt-10 text-sm xs:text-lg">
+          <Link to="/" className="flex justify-center mb-10">
+            <img src={kohyoungIcon} className="w-10" />
+          </Link>
           <Link
             to="/register"
             className="p-4 text-white hover:bg-gray-300 hover:text-black transition-all text-center"
