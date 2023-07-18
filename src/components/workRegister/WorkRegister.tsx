@@ -9,17 +9,21 @@ import { regionOptions, typeOptions } from "../constant/constant";
 import { dailyWorkDataProps } from "../../interface/interface";
 import { getUserName, creatDailyWork } from "../../api/firebaseAPI";
 import { makeUniqueId } from "../../helper/helper";
+import WorkTable from "../common/WorkTable";
 
 export default function WorkRegister() {
   const [hqOwner, setHqOwner] = useState("");
+  const [dataId, setDataId] = useState("");
   const userUid = localStorage.getItem("USER_UID");
   const { control, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
+      dataId: "",
       region: "HQ",
       customer: "",
       type: "HQ System",
       helpdesk: "불필요",
       owner: hqOwner,
+      timeTaken: 0,
       selectedDate: new Date(),
       content: "",
     },
@@ -34,7 +38,6 @@ export default function WorkRegister() {
 
   const handleSubmitData = (data: dailyWorkDataProps) => {
     if (!userUid) return;
-    const dataId = makeUniqueId(userUid);
     creatDailyWork(dataId, data);
     reset();
   };
@@ -44,8 +47,10 @@ export default function WorkRegister() {
     reset();
   };
   useEffect(() => {
+    if (userUid === null) return;
     getHqOwner();
-  }, []);
+    setDataId(makeUniqueId(userUid));
+  }, [userUid]);
 
   return (
     <MainContainer>
