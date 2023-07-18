@@ -111,7 +111,7 @@ export default function WorkRegister() {
         </div>
         <div className="w-full flex flex-col items-center">
           <label htmlFor="selectHelpdesk" className="text-lg">
-            유형
+            헬프데스크
           </label>
           <Controller
             name="helpdesk"
@@ -187,10 +187,12 @@ export default function WorkRegister() {
           취소
         </button>
       </form>
+      <WorkTable userName={hqOwner} />
     </MainContainer>
   );
 }
 
 const MainContainer = styled.div`
-  ${tw`w-11/12 ml-auto text-black p-10`}
+  margin-left: 192px;
+  ${tw`w-11/12 text-black p-10`}
 `;
