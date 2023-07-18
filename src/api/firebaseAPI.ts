@@ -41,6 +41,7 @@ export const createNewAccount = async (userInfo: userInfoProps) => {
       email: userInfo.email,
     };
     update(ref(firebasedb), updates);
+    console.log(`[Success] createNewAccount ${new Date()}: 계정등록 완료`);
   } catch (error) {
     console.error(`[Error] createNewAccount ${new Date()}: ${error}`);
   }
@@ -60,16 +61,35 @@ export const creatDailyWork = async (id: string, data: dailyWorkDataProps) => {
   try {
     const updates: dailyWorkUpdatesProps = {};
     updates[`work/${id}`] = {
+      dataId: id,
       region: data.region,
       customer: data.customer,
       type: data.type,
       helpdesk: data.helpdesk,
       owner: data.owner,
+      timeTaken: 0,
       selectedDate: data.selectedDate,
       content: data.content,
     };
     update(ref(firebasedb), updates);
+    console.log(`[Success] creatDailyWork ${new Date()}: 업데이트 완료`);
   } catch (error) {
     console.error(`[Error] creatDailyWork ${new Date()}: ${error}`);
+  }
+};
+
+// Daily Work 가져오기
+export const getDailyWorkFromDB = async () => {
+  try {
+    const data = await get(child(ref(firebasedb), `/work`));
+    if (!data.exists()) {
+      console.warn(
+        `Warning] getDailyWorkFromDB ${new Date()}: 데이터가 없습니다.`
+      );
+      return {};
+    }
+    return data.val();
+  } catch (error) {
+    console.error(`[Error] getDailyWorkFromDB ${new Date()}: ${error}`);
   }
 };
