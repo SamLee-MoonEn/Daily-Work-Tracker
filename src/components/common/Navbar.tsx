@@ -5,10 +5,11 @@ import kohyoungIcon from "../../assets/kohyoung_icon.png";
 export default function Navbar() {
   return (
     <nav className="relative">
-      <div className="h-screen w-1/12 fixed top-0 left-0 bg-primary">
-        <div className="flex flex-col mt-10 text-sm xs:text-lg">
-          <Link to="/" className="flex justify-center mb-10">
+      <div className="h-screen w-1/12 min-w-max fixed top-0 left-0 bg-primary">
+        <div className="flex flex-col mt-10 text-sm md:text-lg">
+          <Link to="/" className="flex justify-center mb-10 items-center mx-2">
             <img src={kohyoungIcon} className="w-10" />
+            <span className="text-white ml-1 text-sm">Daily Work Tracker</span>
           </Link>
           <Link
             to="/register"
