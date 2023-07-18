@@ -17,9 +17,12 @@ export default function Navbar() {
           >
             <span>업무 등록</span>
           </Link>
-          <button className="p-4 text-white hover:bg-gray-300 hover:text-black transition-all">
-            업무 리스트
-          </button>
+          <Link
+            to="/list"
+            className="p-4 text-white hover:bg-gray-300 hover:text-black transition-all text-center"
+          >
+            <span>업무 리스트</span>
+          </Link>
           <button className="p-4 text-white hover:bg-gray-300 hover:text-black transition-all">
             업무 통계
           </button>
