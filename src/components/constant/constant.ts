@@ -1,4 +1,4 @@
-export const regionOptions = [
+export const REGIONS_OPTION = [
   "HQ",
   "KYA",
   "KYC",
@@ -7,7 +7,7 @@ export const regionOptions = [
   "JKY",
   "Intel",
 ];
-export const typeOptions = [
+export const TYPE_OPTION = [
   "HQ System",
   "Cooperation",
   "Manual",
