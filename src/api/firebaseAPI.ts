@@ -57,7 +57,13 @@ export const getUserName = async (uid: string) => {
 };
 
 // Daily Work 등록
-export const creatDailyWork = async (id: string, data: dailyWorkDataProps) => {
+export const creatDailyWork = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: dailyWorkDataProps;
+}) => {
   try {
     const updates: dailyWorkUpdatesProps = {};
     updates[`work/${id}`] = {
@@ -70,9 +76,11 @@ export const creatDailyWork = async (id: string, data: dailyWorkDataProps) => {
       timeTaken: 0,
       selectedDate: data.selectedDate,
       content: data.content,
+      remark: data.remark,
     };
     update(ref(firebasedb), updates);
     console.log(`[Success] creatDailyWork ${new Date()}: 업데이트 완료`);
+    return "성공";
   } catch (error) {
     console.error(`[Error] creatDailyWork ${new Date()}: ${error}`);
   }
@@ -84,12 +92,41 @@ export const getDailyWorkFromDB = async () => {
     const data = await get(child(ref(firebasedb), `/work`));
     if (!data.exists()) {
       console.warn(
-        `Warning] getDailyWorkFromDB ${new Date()}: 데이터가 없습니다.`
+        `[Warning] getDailyWorkFromDB ${new Date()}: 데이터가 없습니다.`
       );
       return {};
     }
     return data.val();
   } catch (error) {
     console.error(`[Error] getDailyWorkFromDB ${new Date()}: ${error}`);
+  }
+};
+
+// Daily Work 수정
+export const modifyDailyWork = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: dailyWorkDataProps;
+}) => {
+  try {
+    const updates: dailyWorkUpdatesProps = {};
+    updates[`work/${id}`] = {
+      dataId: id,
+      region: data.region,
+      customer: data.customer,
+      type: data.type,
+      helpdesk: data.helpdesk,
+      owner: data.owner,
+      timeTaken: data.timeTaken,
+      selectedDate: data.selectedDate,
+      content: data.content,
+      remark: data.remark,
+    };
+    update(ref(firebasedb), updates);
+    console.log(`[Success] creatDailyWork ${new Date()}: 수정 완료`);
+  } catch (error) {
+    console.error(`[Error] creatDailyWork ${new Date()}: ${error}`);
   }
 };
