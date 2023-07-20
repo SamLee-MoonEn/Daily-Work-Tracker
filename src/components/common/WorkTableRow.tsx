@@ -13,8 +13,10 @@ export default function WorkTableRow({
   return (
     <>
       <tr
-        className="cursor-pointer hover:bg-light hover:rounded-lg hover:text-white transition-all text-center"
-        onClick={() => showModal(work.dataId)}
+        className={`cursor-pointer hover:bg-light hover:rounded-lg hover:text-white transition-all text-center ${
+          work.timeTaken === 0 ? "text-red-400" : null
+        }`}
+        onClick={() => showModal(work.dataId as string)}
       >
         <td>{work.region}</td>
         <td>{work.customer}</td>
