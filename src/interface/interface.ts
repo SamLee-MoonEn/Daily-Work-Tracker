@@ -1,13 +1,14 @@
 export interface dailyWorkDataProps {
-  readonly dataId: string;
+  readonly dataId: string | undefined;
   readonly region: string;
   readonly customer: string;
   readonly type: string;
   readonly helpdesk: string;
   readonly owner: string;
-  readonly timeTaken: number;
+  readonly timeTaken: number | undefined;
   readonly selectedDate: Date;
   readonly content: string;
+  readonly remark: string | undefined;
 }
 
 export interface userInfoProps {
@@ -31,10 +32,29 @@ export interface dailyWorkUpdatesProps {
     readonly type: string;
     readonly helpdesk: string;
     readonly owner: string;
-    readonly timeTaken: number;
+    readonly timeTaken: number | undefined;
     readonly selectedDate: Date;
     readonly content: string;
+    readonly remark: string | undefined;
   };
 }
 
 export interface dailyWorkWithKeyDataProps extends dailyWorkUpdatesProps {}
+
+export interface dailyWorkCompleteProps extends dailyWorkDataProps {
+  readonly remark: string;
+}
+export interface dailyWorkCompleteUpdatesProps {
+  [key: string]: {
+    readonly dataId: string;
+    readonly region: string;
+    readonly customer: string;
+    readonly type: string;
+    readonly helpdesk: string;
+    readonly owner: string;
+    readonly timeTaken: number;
+    readonly selectedDate: Date;
+    readonly content: string;
+    readonly remark: string;
+  };
+}
