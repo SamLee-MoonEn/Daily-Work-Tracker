@@ -2,20 +2,42 @@ import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import tw from "twin.macro";
 import { useForm, Controller } from "react-hook-form";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import OptionSelector from "../common/OptionSelector";
 import Calendar from "../common/Calendar";
-import { regionOptions, typeOptions } from "../constant/constant";
+import { REGIONS_OPTION, TYPE_OPTION } from "../constant/constant";
 import { dailyWorkDataProps } from "../../interface/interface";
-import { getUserName, creatDailyWork } from "../../api/firebaseAPI";
+import {
+  getUserName,
+  creatDailyWork,
+  getDailyWorkFromDB,
+} from "../../api/firebaseAPI";
 import { makeUniqueId } from "../../helper/helper";
 import WorkTable from "../common/WorkTable";
 
 export default function WorkRegister() {
   const [hqOwner, setHqOwner] = useState("");
-  const [dataId, setDataId] = useState("");
   const userUid = localStorage.getItem("USER_UID");
-  const { control, handleSubmit, reset, setValue } = useForm({
+  const [filteredData, setFilteredData] = useState<dailyWorkDataProps[]>([]);
+  const queryClient = useQueryClient();
+
+  const schema = yup.object({
+    dataId: yup.string(),
+    region: yup.string().required(),
+    customer: yup.string().required("필수 입력 값입니다."),
+    type: yup.string().required(),
+    helpdesk: yup.string().required(),
+    owner: yup.string().required(),
+    timeTaken: yup.number(),
+    selectedDate: yup.date().required(),
+    content: yup.string().required("필수 입력 값입니다."),
+    remark: yup.string(),
+  });
+
+  const { control, handleSubmit, reset, setValue, formState } = useForm({
     defaultValues: {
       dataId: "",
       region: "HQ",
@@ -26,7 +48,9 @@ export default function WorkRegister() {
       timeTaken: 0,
       selectedDate: new Date(),
       content: "",
+      remark: "",
     },
+    resolver: yupResolver(schema),
   });
 
   const getHqOwner = async () => {
@@ -36,21 +60,42 @@ export default function WorkRegister() {
     setValue("owner", response.name);
   };
 
+  const { data } = useQuery("getDailyWorkData", getDailyWorkFromDB, {
+    enabled: hqOwner !== "",
+    onSuccess: (data) => {
+      const dailyWork: dailyWorkDataProps[] = Object.values(data);
+      const ownerFilteredData = dailyWork.filter((v) => v.owner === hqOwner);
+      const sortedData = ownerFilteredData.sort(
+        (a, b) =>
+          new Date(b.selectedDate).getTime() -
+          new Date(a.selectedDate).getTime()
+      );
+      setFilteredData(sortedData);
+    },
+  });
+
+  const handleCreatDailyWork = useMutation(creatDailyWork, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getDailyWorkData");
+    },
+  });
+
   const handleSubmitData = (data: dailyWorkDataProps) => {
     if (!userUid) return;
-    creatDailyWork(dataId, data);
+    handleCreatDailyWork.mutate({ id: makeUniqueId(userUid), data });
     reset();
+    getHqOwner();
   };
 
   const handleResetData = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     reset();
-  };
-  useEffect(() => {
-    if (userUid === null) return;
     getHqOwner();
-    setDataId(makeUniqueId(userUid));
-  }, [userUid]);
+  };
+
+  useEffect(() => {
+    getHqOwner();
+  }, []);
 
   return (
     <MainContainer>
@@ -72,7 +117,7 @@ export default function WorkRegister() {
                 labelId="selectRegion"
                 selectedValue={field.value}
                 handleGetRegion={(value) => field.onChange(value)}
-                options={regionOptions}
+                options={REGIONS_OPTION}
               />
             )}
           />
@@ -95,6 +140,9 @@ export default function WorkRegister() {
               />
             )}
           />
+          <div className="text-red-500 text-sm">
+            {formState.errors.customer?.message}
+          </div>
         </div>
         <div className="w-full flex flex-col items-center">
           <label htmlFor="selectType" className="text-lg">
@@ -109,7 +157,7 @@ export default function WorkRegister() {
                 labelId="selectType"
                 selectedValue={field.value}
                 handleGetRegion={(value) => field.onChange(value)}
-                options={typeOptions}
+                options={TYPE_OPTION}
               />
             )}
           />
@@ -181,6 +229,9 @@ export default function WorkRegister() {
               />
             )}
           />
+          <div className="text-red-500 text-sm">
+            {formState.errors.content?.message}
+          </div>
         </div>
         <button className="btn text-white bg-light hover:bg-primary border-0 col-start-3">
           등록
@@ -192,7 +243,7 @@ export default function WorkRegister() {
           취소
         </button>
       </form>
-      <WorkTable userName={hqOwner} />
+      <WorkTable filteredData={filteredData} />
     </MainContainer>
   );
 }
