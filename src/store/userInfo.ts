@@ -10,7 +10,7 @@ export const userInfoState = atom({
   ],
 });
 
-export const userUidoState = atom({
+export const userUidState = atom({
   key: "user_uid",
   default: "",
   effects: [
