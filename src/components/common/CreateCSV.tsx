@@ -35,6 +35,7 @@ export default function CreateCSVButton() {
         }
       }}
       filename="example"
+      className="bg-gray-500 hover:bg-gray-700 text-white transition-all p-2 rounded-md "
     >
       예시 파일 다운로드
     </CSVLink>
