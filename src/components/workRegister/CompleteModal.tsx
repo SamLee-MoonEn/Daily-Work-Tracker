@@ -235,7 +235,7 @@ export default function CompleteModal({
             </div>
           </div>
           <button className="btn text-white bg-light hover:bg-primary border-0 col-start-4">
-            등록
+            변경
           </button>
           <button
             className="btn text-white bg-red-400 hover:bg-red-800 border-0 col-start-5"
