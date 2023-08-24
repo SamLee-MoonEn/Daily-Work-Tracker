@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { dailyWorkDataProps } from "../../interface/interface";
 import WorkTableRow from "./WorkTableRow";
-import CompleteModal from "../workRegister/CompleteModal";
+import CompleteModal from "./CompleteModal";
 
 export default function WorkTable({
   filteredData,
