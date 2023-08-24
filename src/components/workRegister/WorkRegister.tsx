@@ -16,7 +16,11 @@ import {
   getDailyWorkFromDB,
 } from "../../api/firebaseAPI";
 import { makeUniqueId } from "../../helper/helper";
-import WorkTable from "../common/WorkTable";
+import WorkTable from "./WorkTable";
+import CreateCSVButton from "../common/CreateCSV";
+import CsvReader from "../common/CsvReader";
+import Loading from "../common/Loading";
+import ImportWorkModal from "./ImportWorkModal";
 
 export default function WorkRegister() {
   const [hqOwner, setHqOwner] = useState("");
@@ -100,6 +104,21 @@ export default function WorkRegister() {
   return (
     <MainContainer>
       <div className="text-2xl ml-10 mt-10 text-black">업무 등록 페이지</div>
+      <Loading loadingTime={1500} />
+      <div className="text-2xl ml-10 mt-10 text-black flex justify-between items-center">
+        <div>업무 등록 페이지</div>
+        <div className="text-sm flex justify-center items-center">
+          <CsvReader handleSetImportData={handleSetImportData} />
+          <CreateCSVButton />
+          <ImportWorkModal
+            isOpen={importModalIsOpen}
+            setIsOpen={setImportModalIsOpen}
+            importData={importData}
+            setImportData={setImportData}
+            userUid={userUid}
+          />
+        </div>
+      </div>
       <form
         onSubmit={handleSubmit(handleSubmitData)}
         className="grid grid-cols-4 grid-rows-2 gap-4 mt-10 border border-solid border-gray-500 rounded-lg p-10"
