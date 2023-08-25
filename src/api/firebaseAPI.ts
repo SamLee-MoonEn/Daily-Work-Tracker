@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { OAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import {
   dailyWorkDataProps,
+  dailyWorkDeleteProps,
   dailyWorkUpdatesProps,
   userInfoProps,
   userInfoUpdatesProps,
@@ -56,7 +57,8 @@ export const createNewAccount = async (userInfo: userInfoProps) => {
 export const getUserName = async (uid: string) => {
   try {
     const data = await get(child(ref(firebasedb), `${uid}/`));
-    return data.val();
+    const userData = await data.val();
+    return userData;
   } catch (error) {
     console.error(`[Error] getAccount ${new Date()}: ${error}`);
   }
@@ -134,6 +136,19 @@ export const modifyDailyWork = async ({
     console.log(`[Success] creatDailyWork ${new Date()}: 수정 완료`);
   } catch (error) {
     console.error(`[Error] creatDailyWork ${new Date()}: ${error}`);
+  }
+};
+
+// Daily Work 삭제
+export const deleteDailyWork = async (id: string) => {
+  try {
+    const updates: dailyWorkDeleteProps = {};
+    updates[`work/${id}`] = null;
+    update(ref(firebasedb), updates);
+    console.log(`[Success] deleteDailyWork ${new Date()}: 삭제 완료`);
+    return "성공";
+  } catch (error) {
+    console.error(`[Error] deleteDailyWork ${new Date()}: ${error}`);
   }
 };
 

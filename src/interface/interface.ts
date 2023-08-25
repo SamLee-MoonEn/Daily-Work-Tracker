@@ -44,6 +44,7 @@ export interface dailyWorkWithKeyDataProps extends dailyWorkUpdatesProps {}
 export interface dailyWorkCompleteProps extends dailyWorkDataProps {
   readonly remark: string;
 }
+
 export interface dailyWorkCompleteUpdatesProps {
   [key: string]: {
     readonly dataId: string;
@@ -57,4 +58,8 @@ export interface dailyWorkCompleteUpdatesProps {
     readonly content: string;
     readonly remark: string;
   };
+}
+
+export interface dailyWorkDeleteProps {
+  [key:string]:null
 }
