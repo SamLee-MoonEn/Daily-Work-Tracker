@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRecoilValue } from "recoil";
 
 import OptionSelector from "../common/OptionSelector";
 import Calendar from "../common/Calendar";
@@ -21,11 +22,14 @@ import CreateCSVButton from "../common/CreateCSV";
 import CsvReader from "../common/CsvReader";
 import Loading from "../common/Loading";
 import ImportWorkModal from "./ImportWorkModal";
+import { userInfoState } from "../../store/userInfo";
 
 export default function WorkRegister() {
   const [hqOwner, setHqOwner] = useState("");
-  const userUid = localStorage.getItem("USER_UID");
+  const [userUid, setUserUid] = useState("");
   const [filteredData, setFilteredData] = useState<dailyWorkDataProps[]>([]);
+  const [importData, setImportData] = useState<[]>([]);
+  const [importModalIsOpen, setImportModalIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const schema = yup.object({
@@ -57,11 +61,15 @@ export default function WorkRegister() {
     resolver: yupResolver(schema),
   });
 
-  const getHqOwner = async () => {
-    if (!userUid) return;
-    const response = await getUserName(userUid);
-    setHqOwner(response.name);
-    setValue("owner", response.name);
+  const getHqOwner = async (uid: string) => {
+    if (!uid) return;
+    setTimeout(() => {
+      const response = getUserName(uid);
+      response.then((result) => {
+        setHqOwner(result.name);
+        setValue("owner", result.name);
+      });
+    }, 1000);
   };
 
   const { data } = useQuery("getDailyWorkData", getDailyWorkFromDB, {
@@ -88,22 +96,27 @@ export default function WorkRegister() {
     if (!userUid) return;
     handleCreatDailyWork.mutate({ id: makeUniqueId(userUid), data });
     reset();
-    getHqOwner();
+    getHqOwner(userUid);
   };
 
   const handleResetData = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     reset();
-    getHqOwner();
+    getHqOwner(userUid);
+  };
+
+  const handleSetImportData = (result: any) => {
+    setImportData(result.data);
+    setImportModalIsOpen(true);
   };
 
   useEffect(() => {
-    getHqOwner();
-  }, []);
+    setUserUid(localStorage.getItem("USER_UID") as string);
+    getHqOwner(userUid);
+  }, [userUid]);
 
   return (
     <MainContainer>
-      <div className="text-2xl ml-10 mt-10 text-black">업무 등록 페이지</div>
       <Loading loadingTime={1500} />
       <div className="text-2xl ml-10 mt-10 text-black flex justify-between items-center">
         <div>업무 등록 페이지</div>
