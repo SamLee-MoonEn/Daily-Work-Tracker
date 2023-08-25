@@ -23,17 +23,22 @@ export default function LoginPage() {
       await createNewAccount(user);
       localStorage.setItem("isLogin", "true");
       navigate("/register");
+      console.log(`[Success] handleLogin ${new Date()}: Login Successful`);
     } catch (error) {
       console.error(`[Error] handleLogin ${new Date()}: ${error}`);
     }
   };
 
   useEffect(() => {
-    const loginCheck = localStorage.getItem("isLogin");
-    if (localStorage.getItem("USER_UID") && loginCheck) {
+    const loginCheck = localStorage.getItem("isLogin") || "false";
+    const loginUid = localStorage.getItem("USER_UID") || "";
+    if (loginUid && JSON.parse(loginCheck)) {
       navigate("/register");
+      console.log(`[Success] Login ${new Date()}: Already logged in`);
+    } else {
+      navigate("/");
     }
-  });
+  }, []);
 
   return (
     <MainContainer>
