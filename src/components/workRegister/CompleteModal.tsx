@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { dailyWorkDataProps } from "../../interface/interface";
 import OptionSelector from "../common/OptionSelector";
 import { REGIONS_OPTION, TYPE_OPTION } from "../constant/constant";
-import { modifyDailyWork } from "../../api/firebaseAPI";
+import { modifyDailyWork, deleteDailyWork } from "../../api/firebaseAPI";
 import Calendar from "../common/Calendar";
 
 const schema = yup.object({
@@ -55,6 +55,11 @@ export default function CompleteModal({
       queryClient.invalidateQueries("getDailyWorkData");
     },
   });
+  const deleteDailyWorkMutation = useMutation(deleteDailyWork, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("getDailyWorkData");
+    },
+  });
 
   const handleSubmitData = (data: dailyWorkDataProps) => {
     modifyDailyWorkMutation.mutate({ id: selectedDataId, data });
@@ -64,9 +69,19 @@ export default function CompleteModal({
   return (
     <dialog id="complete_modal" className="modal" open={isOpen}>
       <div className="p-1 bg-white rounded-lg shadow-2xl">
+        <div className="flex justify-end">
+          <button
+            className="btn m-2 bg-transparent hover:bg-transparent border-0 text-2xl"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            X
+          </button>
+        </div>
         <form
           onSubmit={handleSubmit(handleSubmitData)}
-          className="grid grid-cols-5 grid-rows-4 gap-4 mt-10 rounded-lg p-10"
+          className="grid grid-cols-5 grid-rows-4 gap-4 rounded-lg p-10"
         >
           <div className="w-full flex flex-col items-center">
             <label htmlFor="selectRegion" className="text-lg">
@@ -242,9 +257,10 @@ export default function CompleteModal({
             onClick={(e) => {
               e.preventDefault();
               setIsOpen(false);
+              deleteDailyWorkMutation.mutate(selectedDataId);
             }}
           >
-            취소
+            삭제
           </button>
         </form>
       </div>
