@@ -266,7 +266,7 @@ export default function WorkRegister() {
             {formState.errors.content?.message}
           </div>
         </div>
-        <button className="btn text-white bg-light hover:bg-primary border-0 col-start-3">
+        <button className="btn text-white bg-light hover:bg-main border-0 col-start-3">
           등록
         </button>
         <button

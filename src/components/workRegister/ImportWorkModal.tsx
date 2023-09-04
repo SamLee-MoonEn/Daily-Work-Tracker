@@ -38,7 +38,7 @@ export default function ImportWorkModal({
           )}
           <div className="my-2 flex justify-end">
             <button
-              className="btn text-white bg-light hover:bg-primary border-0 mr-2 w-32"
+              className="btn text-white bg-light hover:bg-main border-0 mr-2 w-32"
               onClick={(e) => {
                 e.preventDefault();
                 creatMassDailyWork(importData);

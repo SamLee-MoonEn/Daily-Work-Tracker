@@ -21,8 +21,8 @@ export default function WorkTable({
     <>
       <div className="overflow-x-auto mt-10 rounded-lg overflow-hidden">
         <table className="table table-pin-rows -z-0">
-          <thead className="text-black bg-gray-300 text-center text-sm">
-            <tr>
+          <thead>
+            <tr className="text-black bg-gray-200 text-center text-sm">
               <th>요청 지역</th>
               <th>고객</th>
               <th>유형</th>
