@@ -28,9 +28,7 @@ export default function ImportWorkModal({
   return (
     <dialog id="complete_modal" className="modal overflow-scroll" open={isOpen}>
       <div className="p-1 bg-white rounded-lg shadow-2xl modal-box max-w-max">
-        <form
-        // onSubmit={handleSubmit(handleSubmitData)}
-        >
+        <form>
           {importData.length === 0 ? (
             <></>
           ) : (
@@ -41,12 +39,12 @@ export default function ImportWorkModal({
               className="btn text-white bg-light hover:bg-main border-0 mr-2 w-32"
               onClick={(e) => {
                 e.preventDefault();
-                creatMassDailyWork(importData);
+                creatMassDailyWorkMutation.mutate(importData);
                 setIsOpen(false);
                 setImportData([]);
               }}
             >
-              변경
+              확인
             </button>
             <button
               className="btn text-white bg-red-400 hover:bg-red-800 border-0 mr-2 w-32"
