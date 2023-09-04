@@ -14,9 +14,11 @@ const StyledDatepicker = styled(DatePicker)`
 export default function Calendar({
   handleDate,
   selectedDate,
+  disabled = false,
 }: {
   handleDate: (date: Date) => void;
   selectedDate: Date;
+  disabled: boolean;
 }) {
   return (
     <DatePickerWrapper>
@@ -24,8 +26,10 @@ export default function Calendar({
         dateFormat={"yyyy년 MM월 dd일"}
         locale={ko}
         shouldCloseOnSelect
+        closeOnScroll={true}
         selected={selectedDate}
         onChange={(date: Date) => handleDate(date)}
+        disabled={disabled}
       />
     </DatePickerWrapper>
   );

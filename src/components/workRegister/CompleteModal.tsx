@@ -181,6 +181,7 @@ export default function CompleteModal({
               control={control}
               render={({ field }) => (
                 <Calendar
+                  disabled={false}
                   selectedDate={field.value}
                   handleDate={(date: Date) => field.onChange(date)}
                 />
