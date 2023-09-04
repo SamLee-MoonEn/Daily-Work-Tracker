@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import { dailyWorkDataProps } from "../../interface/interface";
 
