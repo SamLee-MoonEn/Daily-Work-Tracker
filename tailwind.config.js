@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["/index.html", "./**/*.{ts,tsx}"],
+  content: ["/index.html", "./**/*.{ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
       sm: "480px",
@@ -9,11 +9,15 @@ export default {
       xl: "1280px",
       xl2: "1360px",
     },
-    extend: { colors: { light: "#79A9AE" } },
+    extend: {
+      colors: { light: "#79A9AE", main: "#3B6A5C" },
+      boxShadow: {
+        radioInner: "0 0 0 4px white inset",
+      },
+    },
     fontFamily: {
       sans: ["GmarketSansMedium"],
     },
   },
-  plugins: [require("daisyui"), "twin.macro"],
-  daisyui: { themes: [{ mytheme: { primary: "#3B6A5C" } }] },
+  plugins: [require("daisyui")],
 };
