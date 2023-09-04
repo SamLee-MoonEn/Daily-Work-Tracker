@@ -5,7 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRecoilValue } from "recoil";
 
 import OptionSelector from "../common/OptionSelector";
 import Calendar from "../common/Calendar";
@@ -22,7 +21,7 @@ import CreateCSVButton from "../common/CreateCSV";
 import CsvReader from "../common/CsvReader";
 import Loading from "../common/Loading";
 import ImportWorkModal from "./ImportWorkModal";
-import { userInfoState } from "../../store/userInfo";
+import ExportCSV from "../common/ExportCSV";
 
 export default function WorkRegister() {
   const [hqOwner, setHqOwner] = useState("");
@@ -122,6 +121,7 @@ export default function WorkRegister() {
         <div>업무 등록 페이지</div>
         <div className="text-sm flex justify-center items-center">
           <CsvReader handleSetImportData={handleSetImportData} />
+          <ExportCSV data={filteredData} />
           <CreateCSVButton />
           <ImportWorkModal
             isOpen={importModalIsOpen}
