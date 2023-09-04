@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import kohyoungIcon from "../../assets/kohyoung_icon.png";
 
@@ -7,25 +7,43 @@ export default function Navbar() {
     <nav className="relative">
       <div className="h-screen w-1/12 min-w-max fixed top-0 left-0 bg-main">
         <div className="flex flex-col mt-10 text-sm md:text-lg">
-          <Link to="/" className="flex justify-center mb-10 items-center mx-2">
+          <NavLink
+            to="/"
+            className="flex justify-center mb-10 items-center mx-2"
+          >
             <img src={kohyoungIcon} className="w-10" />
             <span className="text-white ml-1 text-sm">Daily Work Tracker</span>
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/register"
-            className="p-4 text-white hover:bg-gray-300 hover:text-black transition-all text-center"
+            className={({ isActive }) =>
+              `p-4 hover:bg-gray-300 hover:text-black transition-all text-center ${
+                isActive ? "text-black bg-gray-300" : "text-white"
+              }`
+            }
           >
             <span>업무 등록</span>
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/list"
-            className="p-4 text-white hover:bg-gray-300 hover:text-black transition-all text-center"
+            className={({ isActive }) =>
+              `p-4 hover:bg-gray-300 hover:text-black transition-all text-center ${
+                isActive ? "text-black bg-gray-300" : "text-white"
+              }`
+            }
           >
             <span>업무 리스트</span>
-          </Link>
-          <button className="p-4 text-white hover:bg-gray-300 hover:text-black transition-all">
-            업무 통계
-          </button>
+          </NavLink>
+          <NavLink
+            to="/analysis"
+            className={({ isActive }) =>
+              `p-4 hover:bg-gray-300 hover:text-black transition-all text-center ${
+                isActive ? "text-black bg-gray-300" : "text-white"
+              }`
+            }
+          >
+            <span>업무 분석</span>
+          </NavLink>
         </div>
       </div>
     </nav>
