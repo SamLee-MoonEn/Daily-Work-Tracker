@@ -24,7 +24,7 @@ export default function Navbar() {
           >
             <span>업무 등록</span>
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/list"
             className={({ isActive }) =>
               `p-4 hover:bg-gray-300 hover:text-black transition-all text-center ${
@@ -33,7 +33,7 @@ export default function Navbar() {
             }
           >
             <span>업무 리스트</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/analysis"
             className={({ isActive }) =>
