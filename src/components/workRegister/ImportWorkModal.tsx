@@ -8,13 +8,11 @@ export default function ImportWorkModal({
   isOpen,
   setIsOpen,
   setImportData,
-  userUid,
 }: {
   importData: [];
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   setImportData: (value: []) => void;
-  userUid: string | null;
 }) {
   const queryClient = useQueryClient();
 

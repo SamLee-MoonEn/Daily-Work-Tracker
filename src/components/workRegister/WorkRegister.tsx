@@ -71,7 +71,7 @@ export default function WorkRegister() {
     }, 1000);
   };
 
-  const { data } = useQuery("getDailyWorkData", getDailyWorkFromDB, {
+  const {} = useQuery("getDailyWorkData", getDailyWorkFromDB, {
     enabled: hqOwner !== "",
     onSuccess: (data) => {
       const dailyWork: dailyWorkDataProps[] = Object.values(data);
@@ -128,7 +128,6 @@ export default function WorkRegister() {
             setIsOpen={setImportModalIsOpen}
             importData={importData}
             setImportData={setImportData}
-            userUid={userUid}
           />
         </div>
       </div>
