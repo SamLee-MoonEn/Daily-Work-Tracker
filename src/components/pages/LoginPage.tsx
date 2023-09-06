@@ -15,12 +15,13 @@ export default function LoginPage() {
   const handleLogin = async () => {
     try {
       const userInfo = await handleMicrosoftLogin();
-      setUser({
+      const tempUserInfo = {
         displayName: userInfo?.displayName as string,
         email: userInfo?.email as string,
         uid: userInfo?.uid as string,
-      });
-      await createNewAccount(user);
+      };
+      setUser(tempUserInfo);
+      await createNewAccount(tempUserInfo);
       localStorage.setItem("isLogin", "true");
       navigate("/register");
       console.log(`[Success] handleLogin ${new Date()}: Login Successful`);
