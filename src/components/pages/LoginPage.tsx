@@ -10,7 +10,7 @@ import { userInfoState } from "../../store/userInfo";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useRecoilState(userInfoState);
+  const [, setUser] = useRecoilState(userInfoState);
 
   const handleLogin = async () => {
     try {
