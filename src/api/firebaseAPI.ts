@@ -160,7 +160,6 @@ export const creatMassDailyWork = async (importedData: string[][]) => {
       const changeFormatToDate = new Date(data[3]);
       const updates: dailyWorkUpdatesProps = {};
       const id = makeUniqueId(userUid as string);
-      console.log(data[6]);
       updates[`work/${id}`] = {
         dataId: id,
         region: data[0],
