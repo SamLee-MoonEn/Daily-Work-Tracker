@@ -4,10 +4,14 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { dailyWorkDataProps } from "../../interface/interface";
-import OptionSelector from "../common/OptionSelector";
-import { REGIONS_OPTION, TYPE_OPTION } from "../constant/constant";
+import {
+  REGIONS_OPTION,
+  TYPE_DESCRIPTION,
+  TYPE_OPTION,
+} from "../constant/constant";
 import { modifyDailyWork, deleteDailyWork } from "../../api/firebaseAPI";
 import Calendar from "../common/Calendar";
+import CustomOptionSelector from "../common/CustomOptionSelector";
 
 const schema = yup.object({
   dataId: yup.string(),
@@ -92,11 +96,13 @@ export default function CompleteModal({
               control={control}
               defaultValue="HQ"
               render={({ field }) => (
-                <OptionSelector
+                <CustomOptionSelector
+                  defaultValue={field.value}
                   labelId="selectRegion"
-                  selectedValue={field.value}
-                  handleGetRegion={(value) => field.onChange(value)}
                   options={REGIONS_OPTION}
+                  isTooltip={false}
+                  tooltipDescription={null}
+                  handleGetValue={(value) => field.onChange(value)}
                 />
               )}
             />
@@ -129,11 +135,13 @@ export default function CompleteModal({
               control={control}
               defaultValue="HQ"
               render={({ field }) => (
-                <OptionSelector
+                <CustomOptionSelector
+                  defaultValue={field.value}
                   labelId="selectType"
-                  selectedValue={field.value}
-                  handleGetRegion={(value) => field.onChange(value)}
                   options={TYPE_OPTION}
+                  isTooltip={true}
+                  tooltipDescription={TYPE_DESCRIPTION}
+                  handleGetValue={(value) => field.onChange(value)}
                 />
               )}
             />
@@ -146,11 +154,13 @@ export default function CompleteModal({
               name="helpdesk"
               control={control}
               render={({ field }) => (
-                <OptionSelector
+                <CustomOptionSelector
+                  defaultValue={field.value}
                   labelId="selectHelpdesk"
-                  selectedValue={field.value}
-                  handleGetRegion={(value) => field.onChange(value)}
                   options={["불필요", "필요"]}
+                  isTooltip={false}
+                  tooltipDescription={null}
+                  handleGetValue={(value) => field.onChange(value)}
                 />
               )}
             />
@@ -220,7 +230,14 @@ export default function CompleteModal({
                   id="inputTimeTaken"
                   className="input border-2 border-black w-full"
                   value={field.value}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) => {
+                    if (Number(e.target.value)) {
+                      field.onChange(Number(e.target.value));
+                    } else {
+                      alert("숫자를 입력해 주세요.");
+                      field.onChange(0);
+                    }
+                  }}
                 />
               )}
             />

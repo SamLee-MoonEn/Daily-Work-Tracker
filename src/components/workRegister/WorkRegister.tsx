@@ -6,9 +6,12 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import OptionSelector from "../common/OptionSelector";
 import Calendar from "../common/Calendar";
-import { REGIONS_OPTION, TYPE_OPTION } from "../constant/constant";
+import {
+  REGIONS_OPTION,
+  TYPE_DESCRIPTION,
+  TYPE_OPTION,
+} from "../constant/constant";
 import { dailyWorkDataProps } from "../../interface/interface";
 import {
   getUserName,
@@ -22,6 +25,7 @@ import CsvReader from "../common/CsvReader";
 import Loading from "../common/Loading";
 import ImportWorkModal from "./ImportWorkModal";
 import ExportCSV from "../common/ExportCSV";
+import CustomOptionSelector from "../common/CustomOptionSelector";
 
 export default function WorkRegister() {
   const [hqOwner, setHqOwner] = useState("");
@@ -29,6 +33,7 @@ export default function WorkRegister() {
   const [filteredData, setFilteredData] = useState<dailyWorkDataProps[]>([]);
   const [importData, setImportData] = useState<[]>([]);
   const [importModalIsOpen, setImportModalIsOpen] = useState(false);
+
   const queryClient = useQueryClient();
 
   const schema = yup.object({
@@ -44,21 +49,22 @@ export default function WorkRegister() {
     remark: yup.string(),
   });
 
-  const { control, handleSubmit, reset, setValue, formState } = useForm({
-    defaultValues: {
-      dataId: "",
-      region: "HQ",
-      customer: "",
-      type: "HQ System",
-      helpdesk: "불필요",
-      owner: hqOwner,
-      timeTaken: 0,
-      selectedDate: new Date(),
-      content: "",
-      remark: "",
-    },
-    resolver: yupResolver(schema),
-  });
+  const { control, handleSubmit, reset, setValue, formState, getValues } =
+    useForm({
+      defaultValues: {
+        dataId: "",
+        region: "HQ",
+        customer: "",
+        type: "Parts",
+        helpdesk: "불필요",
+        owner: hqOwner,
+        timeTaken: 0,
+        selectedDate: new Date(),
+        content: "",
+        remark: "",
+      },
+      resolver: yupResolver(schema),
+    });
 
   const getHqOwner = async (uid: string) => {
     if (!uid) return;
@@ -95,6 +101,7 @@ export default function WorkRegister() {
     if (!userUid) return;
     handleCreatDailyWork.mutate({ id: makeUniqueId(userUid), data });
     reset();
+
     getHqOwner(userUid);
   };
 
@@ -142,13 +149,14 @@ export default function WorkRegister() {
           <Controller
             name="region"
             control={control}
-            defaultValue="HQ"
             render={({ field }) => (
-              <OptionSelector
+              <CustomOptionSelector
+                defaultValue={getValues().region}
                 labelId="selectRegion"
-                selectedValue={field.value}
-                handleGetRegion={(value) => field.onChange(value)}
                 options={REGIONS_OPTION}
+                isTooltip={false}
+                tooltipDescription={null}
+                handleGetValue={(value) => field.onChange(value)}
               />
             )}
           />
@@ -182,13 +190,14 @@ export default function WorkRegister() {
           <Controller
             name="type"
             control={control}
-            defaultValue="HQ"
             render={({ field }) => (
-              <OptionSelector
+              <CustomOptionSelector
+                defaultValue={getValues().type}
                 labelId="selectType"
-                selectedValue={field.value}
-                handleGetRegion={(value) => field.onChange(value)}
                 options={TYPE_OPTION}
+                isTooltip={true}
+                tooltipDescription={TYPE_DESCRIPTION}
+                handleGetValue={(value) => field.onChange(value)}
               />
             )}
           />
@@ -201,11 +210,13 @@ export default function WorkRegister() {
             name="helpdesk"
             control={control}
             render={({ field }) => (
-              <OptionSelector
+              <CustomOptionSelector
+                defaultValue={getValues().helpdesk}
                 labelId="selectHelpdesk"
-                selectedValue={field.value}
-                handleGetRegion={(value) => field.onChange(value)}
                 options={["불필요", "필요"]}
+                isTooltip={false}
+                tooltipDescription={null}
+                handleGetValue={(value) => field.onChange(value)}
               />
             )}
           />
