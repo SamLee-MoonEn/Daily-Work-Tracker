@@ -10,6 +10,7 @@ import {
 import { getDatabase, update, ref, get, child } from "firebase/database";
 
 import { makeUniqueId } from "../helper/helper";
+import axios from "axios";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBAQEwyj1V0rqEzlh_rQKEsfaHfd8jN_Eg",
@@ -33,6 +34,8 @@ export const handleMicrosoftLogin = async () => {
   try {
     const provider = new OAuthProvider("microsoft.com");
     const result = await signInWithPopup(auth, provider);
+    const response = await axios.get("/api");
+    console.log(response);
     return result.user;
   } catch (error) {
     console.error(`[Error] handleMicrosoftLogin ${new Date()}: ${error}`);
